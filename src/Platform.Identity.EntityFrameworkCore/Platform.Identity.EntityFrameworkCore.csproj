@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
     <ProjectReference Include="..\Platform.Identity.Domain\Platform.Identity.Domain.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" Version="10.6.0" />
+	<PackageReference Include="Volo.Abp.EntityFrameworkCore.PostgreSql" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" Version="10.6.0" />
     <PackageReference Include="Volo.Abp.Identity.EntityFrameworkCore" Version="10.6.0" />

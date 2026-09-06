@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,12 @@ public class Program
 {
     public async static Task<int> Main(string[] args)
     {
+        // Cho phép DateTime Kind=Local khi dùng PostgreSQL (Npgsql)
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+        // Load .env từ root repo (ưu tiên) hoặc thư mục hiện tại
+        LoadEnvFile();
+
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
             .MinimumLevel.Debug()
@@ -52,5 +59,30 @@ public class Program
         {
             Log.CloseAndFlush();
         }
+    }
+
+    private static void LoadEnvFile()
+    {
+        // Các vị trí có thể chứa .env (tùy chạy từ đâu)
+        var candidates = new[]
+        {
+            Path.Combine(Directory.GetCurrentDirectory(), ".env"),                    // chạy từ root
+            Path.Combine(Directory.GetCurrentDirectory(), "../../.env"),              // chạy từ src/Project
+            Path.Combine(AppContext.BaseDirectory, "../../../.env"),                  // khi publish/bin
+            Path.Combine(AppContext.BaseDirectory, "../../../../.env"),
+        };
+
+        foreach (var path in candidates)
+        {
+            var fullPath = Path.GetFullPath(path);
+            if (File.Exists(fullPath))
+            {
+                DotNetEnv.Env.Load(fullPath);
+                Console.WriteLine($"[ENV] Loaded: {fullPath}");
+                return;
+            }
+        }
+
+        Console.WriteLine("[ENV] No .env file found (ok on production).");
     }
 }

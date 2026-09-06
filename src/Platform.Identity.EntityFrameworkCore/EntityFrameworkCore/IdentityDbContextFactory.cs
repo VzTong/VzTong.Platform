@@ -17,7 +17,7 @@ public class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbCo
         var configuration = BuildConfiguration();
 
         var builder = new DbContextOptionsBuilder<IdentityDbContext>()
-            .UseSqlServer(configuration.GetConnectionString("Default"));
+            .UseNpgsql(configuration.GetConnectionString("Default"));
 
         return new IdentityDbContext(builder.Options);
     }
