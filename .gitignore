@@ -188,7 +188,7 @@ appsettings.*.Development.json
 *.pfx
 *.key
 secrets.json
-appsettings.secrets.json
+# appsettings.secrets.json
 **/secrets.json
 
 # -----------------------------------------------------------------------------
