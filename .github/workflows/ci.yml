@@ -1,0 +1,35 @@
+name: CI                    # Tên hiện trên tab Actions
+
+on:                         # KHI NÀO chạy?
+  push:
+    branches: [main, develop]   # Khi push vào main hoặc develop
+  pull_request:
+    branches: [main, develop]   # Khi mở/sửa Pull Request vào main/develop
+
+jobs:
+  build:                    # Một “công việc” tên build
+    runs-on: ubuntu-latest  # Chạy trên máy ảo Linux của GitHub
+
+    steps:                  # Các bước lần lượt
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        # Lấy toàn bộ code trong repo về máy ảo
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+        # Cài .NET 10 trên máy ảo (giống máy bạn)
+
+      - name: Restore
+        run: dotnet restore Platform.slnx
+        # Tải NuGet packages
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+        # Build project ở chế độ Release
+
+      - name: Docker build (smoke)
+        run: docker build -t platform-identity:ci .
+        # Thử build Docker image (đảm bảo Dockerfile không gãy)
