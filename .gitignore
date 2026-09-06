@@ -1,0 +1,258 @@
+# =============================================================================
+# VzTong.Platform - Comprehensive .gitignore
+# =============================================================================
+# Based on GitHub's Visual Studio template + .NET + ABP Framework specifics
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Build Results
+# -----------------------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# -----------------------------------------------------------------------------
+# Visual Studio / IDE
+# -----------------------------------------------------------------------------
+.vs/
+.vscode/
+.idea/
+*.sln.iml
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.swp
+*~
+~$*
+
+# -----------------------------------------------------------------------------
+# ReSharper / Rider / JetBrains
+# -----------------------------------------------------------------------------
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# -----------------------------------------------------------------------------
+# Other Tools
+# -----------------------------------------------------------------------------
+# JustCode
+.JustCode
+# TeamCity
+_TeamCity*
+# DotCover
+*.dotCover
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+# Web workbench (sass)
+.sass-cache/
+# Installshield
+[Ee]xpress/
+# DocProject
+DocProject/
+# Click-Once
+publish/
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+PublishScripts/
+# NuGet
+*.nupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+# Microsoft Azure
+csx/
+*.build.csdef
+ecf/
+rcf/
+# Windows Store
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+# Visual Studio cache
+*.[Cc]ache
+!*.[Cc]ache/
+# Others
+ClientBin/
+*.dbmdl
+*.dbproj.schemaview
+*.pfx
+*.publishsettings
+node_modules/
+orleans.codegen.cs
+# bower_components (uncomment if needed)
+# bower_components/
+# RIA/Silverlight
+Generated_Code/
+# Backup & report files
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+# SQL Server
+*.mdf
+*.ldf
+# Business Intelligence
+*.rdl.data
+*.bim.layout
+*.bim_*.settings
+# Microsoft Fakes
+FakesAssemblies/
+# GhostDoc
+*.GhostDoc.xml
+# Node.js Tools for VS
+.ntvs_analysis.dat
+# VS 6
+*.plg
+*.opt
+# LightSwitch
+**/*.HTMLClient/GeneratedArtifacts
+**/*.DesktopClient/GeneratedArtifacts
+**/*.DesktopClient/ModelManifest.xml
+**/*.Server/GeneratedArtifacts
+**/*.Server/ModelManifest.xml
+_Pvt_Extensions
+# Paket
+.paket/paket.exe
+paket-files/
+# FAKE
+.fake/
+# DNX (legacy)
+project.lock.json
+project.fragment.lock.json
+
+# -----------------------------------------------------------------------------
+# Test Results
+# -----------------------------------------------------------------------------
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+*.coverage
+*.coveragexml
+*.trx
+
+# -----------------------------------------------------------------------------
+# Secrets & Configuration (Local Only)
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+**/appsettings.Development.json
+appsettings.*.Development.json
+*.pfx
+*.key
+secrets.json
+appsettings.secrets.json
+**/secrets.json
+
+# -----------------------------------------------------------------------------
+# OS Generated
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# -----------------------------------------------------------------------------
+# Docker
+# -----------------------------------------------------------------------------
+**/Dockerfile.dev
+**/docker-compose.override.yml
+
+# -----------------------------------------------------------------------------
+# Database
+# -----------------------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+
+# -----------------------------------------------------------------------------
+# ABP Framework / Project Specific
+# -----------------------------------------------------------------------------
+# Static libs restored via 'abp install-libs'
+**/wwwroot/libs/*
+
+# Logs (generic pattern covers all projects)
+**/Logs/*
+
+# -----------------------------------------------------------------------------
+# Language / Framework Specific
+# -----------------------------------------------------------------------------
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+env/
+
+# Node.js / Frontend
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.dist/
+.build/
+.next/
+.nuxt/
+.output/
+
+# -----------------------------------------------------------------------------
+# Editor / OS Temporary Files
+# -----------------------------------------------------------------------------
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+*~

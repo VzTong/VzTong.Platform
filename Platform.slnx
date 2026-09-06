@@ -1,0 +1,35 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Platform.Identity.Application.Contracts/Platform.Identity.Application.Contracts.csproj" />
+    <Project Path="src/Platform.Identity.Application/Platform.Identity.Application.csproj" />
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <Project Path="src/Platform.Identity.DbMigrator/Platform.Identity.DbMigrator.csproj" />
+    <Project Path="src/Platform.Identity.Domain.Shared/Platform.Identity.Domain.Shared.csproj" />
+    <Project Path="src/Platform.Identity.Domain/Platform.Identity.Domain.csproj" />
+    <Project Path="src/Platform.Identity.EntityFrameworkCore/Platform.Identity.EntityFrameworkCore.csproj" />
+    <Project Path="src/Platform.Identity.HttpApi.Client/Platform.Identity.HttpApi.Client.csproj" />
+    
+    <Project Path="src/Platform.Identity.HttpApi.Host/Platform.Identity.HttpApi.Host.csproj" />
+    <Project Path="src/Platform.Identity.HttpApi/Platform.Identity.HttpApi.csproj" />
+    
+    
+    
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Platform.Identity.Application.Tests/Platform.Identity.Application.Tests.csproj" />
+    <Project Path="test/Platform.Identity.Domain.Tests/Platform.Identity.Domain.Tests.csproj" />
+    <Project Path="test/Platform.Identity.EntityFrameworkCore.Tests/Platform.Identity.EntityFrameworkCore.Tests.csproj" />
+    <Project Path="test/Platform.Identity.HttpApi.Client.ConsoleTestApp/Platform.Identity.HttpApi.Client.ConsoleTestApp.csproj" />
+    
+    <Project Path="test/Platform.Identity.TestBase/Platform.Identity.TestBase.csproj" />
+    
+  </Folder>
+</Solution>
