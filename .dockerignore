@@ -1,6 +1,7 @@
 **/.git
 **/.vs
 **/.vscode
+**/.idea
 **/bin
 **/obj
 **/node_modules
@@ -10,5 +11,8 @@
 **/appsettings.*.Development.json
 **/*.user
 **/*.pfx
+**/Logs
 **/TestResults
 **/artifacts
+**/.dockerignore
+**/Dockerfile*
