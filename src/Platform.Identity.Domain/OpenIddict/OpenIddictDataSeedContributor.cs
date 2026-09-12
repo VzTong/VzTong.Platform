@@ -102,6 +102,31 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 clientUri: swaggerRootUrl
             );
         }
+
+
+        // DocForge Web (SPA) – password + refresh cho MVP
+        var docForgeClientId = configurationSection["DocForge_Web:ClientId"];
+        if (!docForgeClientId.IsNullOrWhiteSpace())
+        {
+            var docForgeRootUrl = configurationSection["DocForge_Web:RootUrl"]?.TrimEnd('/');
+
+            await CreateApplicationAsync(
+                name: docForgeClientId!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "DocForge Web",
+                secret: null,
+                grantTypes: new List<string>
+                {
+                    OpenIddictConstants.GrantTypes.Password,
+                    OpenIddictConstants.GrantTypes.RefreshToken,
+                },
+                scopes: commonScopes,
+                redirectUri: docForgeRootUrl,
+                clientUri: docForgeRootUrl,
+                postLogoutRedirectUri: docForgeRootUrl
+            );
+        }
     }
 
     private async Task CreateApplicationAsync(
