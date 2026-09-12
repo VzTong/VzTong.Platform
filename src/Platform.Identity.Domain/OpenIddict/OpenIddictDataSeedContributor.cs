@@ -38,7 +38,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         IOpenIddictScopeRepository openIddictScopeRepository,
         IOpenIddictScopeManager scopeManager,
         IPermissionDataSeeder permissionDataSeeder,
-        IStringLocalizer<OpenIddictResponse> l )
+        IStringLocalizer<OpenIddictResponse> l)
     {
         _configuration = configuration;
         _openIddictApplicationRepository = openIddictApplicationRepository;
@@ -60,8 +60,11 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
     {
         if (await _openIddictScopeRepository.FindByNameAsync("Identity") == null)
         {
-            await _scopeManager.CreateAsync(new OpenIddictScopeDescriptor {
-                Name = "Identity", DisplayName = "Identity API", Resources = { "Identity" }
+            await _scopeManager.CreateAsync(new OpenIddictScopeDescriptor
+            {
+                Name = "Identity",
+                DisplayName = "Identity API",
+                Resources = { "Identity" }
             });
         }
     }
@@ -78,55 +81,61 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         };
 
         var configurationSection = _configuration.GetSection("OpenIddict:Applications");
+        var keys = configurationSection.GetChildren().Select(c => c.Key).ToList();
 
-
-
-
-
-
+        
         // Swagger Client
-        var swaggerClientId = configurationSection["Identity_Swagger:ClientId"];
-        if (!swaggerClientId.IsNullOrWhiteSpace())
+        try
         {
-            var swaggerRootUrl = configurationSection["Identity_Swagger:RootUrl"]?.TrimEnd('/');
+            var swaggerClientId = configurationSection["Identity_Swagger:ClientId"];
+            if (!swaggerClientId.IsNullOrWhiteSpace())
+            {
+                var swaggerRootUrl = configurationSection["Identity_Swagger:RootUrl"]?.TrimEnd('/');
 
-            await CreateApplicationAsync(
-                name: swaggerClientId!,
-                type: OpenIddictConstants.ClientTypes.Public,
-                consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                displayName: "Swagger Application",
-                secret: null,
-                grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
-                scopes: commonScopes,
-                redirectUri: $"{swaggerRootUrl}/swagger/oauth2-redirect.html",
-                clientUri: swaggerRootUrl
-            );
-        }
+                await CreateApplicationAsync(
+                    name: swaggerClientId!,
+                    type: OpenIddictConstants.ClientTypes.Public,
+                    consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                    displayName: "Swagger Application",
+                    secret: null,
+                    grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
+                    scopes: commonScopes,
+                    redirectUri: $"{swaggerRootUrl}/swagger/oauth2-redirect.html",
+                    clientUri: swaggerRootUrl
+                );
+            }
 
 
-        // DocForge Web (SPA) – password + refresh cho MVP
-        var docForgeClientId = configurationSection["DocForge_Web:ClientId"];
-        if (!docForgeClientId.IsNullOrWhiteSpace())
-        {
-            var docForgeRootUrl = configurationSection["DocForge_Web:RootUrl"]?.TrimEnd('/');
+            // DocForge Web (SPA) – password + refresh cho MVP
+            var docForgeClientId = configurationSection["DocForge_Web:ClientId"];
+            if (!docForgeClientId.IsNullOrWhiteSpace())
+            {
+                var docForgeRootUrl = configurationSection["DocForge_Web:RootUrl"]?.TrimEnd('/');
 
-            await CreateApplicationAsync(
-                name: docForgeClientId!,
-                type: OpenIddictConstants.ClientTypes.Public,
-                consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                displayName: "DocForge Web",
-                secret: null,
-                grantTypes: new List<string>
-                {
+                await CreateApplicationAsync(
+                    name: docForgeClientId!,
+                    type: OpenIddictConstants.ClientTypes.Public,
+                    consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                    displayName: "DocForge Web",
+                    secret: null,
+                    grantTypes: new List<string>
+                    {
                     OpenIddictConstants.GrantTypes.Password,
                     OpenIddictConstants.GrantTypes.RefreshToken,
-                },
-                scopes: commonScopes,
-                redirectUri: docForgeRootUrl,
-                clientUri: docForgeRootUrl,
-                postLogoutRedirectUri: docForgeRootUrl
-            );
+                    },
+                    scopes: commonScopes,
+                    redirectUri: docForgeRootUrl,
+                    clientUri: docForgeRootUrl,
+                    postLogoutRedirectUri: docForgeRootUrl
+                );
+            }
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[OpenIddict Seed] ERROR: " + ex);
+            throw;
+        }
+
     }
 
     private async Task CreateApplicationAsync(
@@ -156,7 +165,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
         var client = await _openIddictApplicationRepository.FindByClientIdAsync(name);
 
-        var application = new AbpApplicationDescriptor {
+        var application = new AbpApplicationDescriptor
+        {
             ClientId = name,
             ClientType = type,
             ClientSecret = secret,
