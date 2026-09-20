@@ -1,0 +1,38 @@
+{
+  "app": {
+    "name": "Platform",
+    "admin": "Admin"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "roles": "Roles",
+    "signOut": "Sign out"
+  },
+  "login": {
+    "eyebrow": "Platform · Control plane",
+    "title": "Sign in",
+    "lede": "Super Admin portal — users, roles, and access across apps.",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Continue",
+    "submitting": "Signing in…",
+    "failed": "Sign-in failed. Check password or whether Identity is running.",
+    "forbidden": "This account does not have Admin access."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Identity overview on Platform.",
+    "users": "Users",
+    "portal": "Portal",
+    "loadError": "Could not load stats (need Identity + Users permission)."
+  },
+  "users": {
+    "title": "Users",
+    "subtitle": "Identity accounts — table and actions coming next."
+  },
+  "roles": {
+    "title": "Roles",
+    "subtitle": "Roles and permissions — coming next."
+  }
+}
