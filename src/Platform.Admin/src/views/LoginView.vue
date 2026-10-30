@@ -133,7 +133,6 @@ async function onSubmit() {
               :type="showPassword ? 'text' : 'password'"
               autocomplete="current-password"
               required
-              @focus="userFocused = true"
               @blur="userFocused = false; lookX = 0; lookY = 0"
               @mousemove="onUserMove"
             />
