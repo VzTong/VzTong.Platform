@@ -1,4 +1,14 @@
 <script setup lang="ts">
+/**
+ * Layout khung portal sau khi đăng nhập.
+ *
+ * - Sidebar: brand + nav (Dashboard / Users / Roles) + user + đổi ngôn ngữ + logout
+ * - Strip gradient trên cùng: signature UI "authority"
+ * - RouterView: render child (dashboard, users, roles)
+ *
+ * Logout chỉ xóa token local rồi về /login; session server (refresh) có thể còn
+ * đến khi hết hạn hoặc revoke — đủ cho MVP.
+ */
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter, useRoute } from 'vue-router'

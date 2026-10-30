@@ -1,38 +1,42 @@
 {
-  "app": {
-    "name": "Platform",
-    "admin": "Admin"
-  },
-  "nav": {
-    "dashboard": "Tổng quan",
-    "users": "Người dùng",
-    "roles": "Vai trò",
-    "signOut": "Đăng xuất"
-  },
-  "login": {
-    "eyebrow": "Platform · Control plane",
-    "title": "Đăng nhập",
-    "lede": "Cổng Super Admin — quản lý user, role và quyền trên các app.",
-    "username": "Tên đăng nhập",
-    "password": "Mật khẩu",
-    "submit": "Tiếp tục",
-    "submitting": "Đang đăng nhập…",
-    "failed": "Đăng nhập thất bại. Kiểm tra mật khẩu hoặc Identity đang chạy.",
-    "forbidden": "Tài khoản không có quyền Admin."
-  },
-  "dashboard": {
-    "title": "Tổng quan",
-    "subtitle": "Thống kê Identity trên Platform.",
-    "users": "Người dùng",
-    "portal": "Portal",
-    "loadError": "Không tải được thống kê (cần Identity + quyền Users)."
-  },
-  "users": {
-    "title": "Người dùng",
-    "subtitle": "Danh sách tài khoản Identity — bảng và thao tác sẽ có ở bước sau."
-  },
-  "roles": {
-    "title": "Vai trò",
-    "subtitle": "Role và permission — sắp có."
-  }
+    "app": {
+        "name": "Platform",
+        "admin": "Admin"
+    },
+    "nav": {
+        "dashboard": "Tổng quan",
+        "users": "Người dùng",
+        "roles": "Vai trò",
+        "signOut": "Đăng xuất"
+    },
+    "login": {
+        "eyebrow": "Platform · Control plane",
+        "title": "Đăng nhập",
+        "lede": "Cổng Super Admin — quản lý user, role và quyền trên các app.",
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "submit": "Tiếp tục",
+        "submitting": "Đang đăng nhập…",
+        "failed": "Đăng nhập thất bại. Kiểm tra mật khẩu hoặc Identity đang chạy.",
+        "forbidden": "Tài khoản không có quyền Admin.",
+        "showPass": "Hiện",
+        "hidePass": "Ẩn",
+        "orSocial": "Hoặc đăng nhập bằng",
+        "socialSoon": "Sẽ có ở giai đoạn sau"
+    },
+    "dashboard": {
+        "title": "Tổng quan",
+        "subtitle": "Thống kê Identity trên Platform.",
+        "users": "Người dùng",
+        "portal": "Portal",
+        "loadError": "Không tải được thống kê (cần Identity + quyền Users)."
+    },
+    "users": {
+        "title": "Người dùng",
+        "subtitle": "Danh sách tài khoản Identity — bảng và thao tác sẽ có ở bước sau."
+    },
+    "roles": {
+        "title": "Vai trò",
+        "subtitle": "Role và permission — sắp có."
+    }
 }

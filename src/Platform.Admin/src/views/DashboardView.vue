@@ -1,4 +1,13 @@
 <script setup lang="ts">
+/**
+ * Dashboard MVP.
+ *
+ * Gọi GET /api/identity/users?MaxResultCount=1 chỉ để lấy totalCount
+ * (không cần load full list). Cần Bearer admin + permission Users.
+ *
+ * Lỗi mạng/403: hiện message i18n, không crash trang.
+ * Stagger fade các ô số liệu bằng animejs (optional UX).
+ */
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import http from '@/api/http'

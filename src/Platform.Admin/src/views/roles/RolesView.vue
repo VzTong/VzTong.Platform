@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * Placeholder Phase 2.
+ * Users: list/search/khóa (isActive)/gán role — sẽ gọi /api/identity/users.
+ * Roles: list + permission grants — /api/identity/roles.
+ * Hiện chỉ tiêu đề i18n để hoàn thiện shell navigation.
+ */
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

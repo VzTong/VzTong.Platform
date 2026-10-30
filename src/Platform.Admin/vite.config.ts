@@ -11,5 +11,18 @@ export default defineConfig({
   },
   server: {
     port: 5174,
+    // Browser gọi cùng origin → Vite forward sang Identity, bỏ kiểm tra cert
+    proxy: {
+      '/connect': {
+        target: 'https://localhost:44322',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/api': {
+        target: 'https://localhost:44322',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 })
