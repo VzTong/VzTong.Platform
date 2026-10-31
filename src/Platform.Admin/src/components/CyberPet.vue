@@ -1,92 +1,75 @@
 <script setup lang="ts">
-/**
- * Pet cyber cạnh tiêu đề login.
- * - eyesMode: 'cover' | 'peek' | 'track'
- *   cover  = ẩn pass → 2 tay che mắt
- *   peek   = hiện pass → hé 1 mắt, 1 tay vẫn gần
- *   track  = focus username → mắt nhìn theo vị trí con trỏ (px relative)
- * - lookX / lookY: offset đồng tử khi track (truyền từ LoginView)
- */
 import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    eyesMode: 'cover' | 'peek' | 'track'
-    lookX?: number
-    lookY?: number
+    mode: 'idle' | 'cover' | 'peek'
+    headTiltDeg?: number
   }>(),
-  { lookX: 0, lookY: 0 },
+  { headTiltDeg: 0 },
 )
 
-/** Giới hạn đồng tử trong hốc mắt */
-const pupil = computed(() => {
-  const x = Math.max(-2.2, Math.min(2.2, props.lookX))
-  const y = Math.max(-1.8, Math.min(1.8, props.lookY))
-  return { x, y }
-})
+const faceStyle = computed(() => ({
+  transform: `rotate(${props.headTiltDeg}deg)`,
+}))
 </script>
 
 <template>
-  <span
-    class="pet"
-    :class="eyesMode"
-    title="Platform watcher"
-    aria-hidden="true"
-  >
-    <svg viewBox="0 0 48 40" width="44" height="36">
-      <!-- thân -->
-      <rect
-        x="6"
-        y="8"
-        width="36"
-        height="24"
-        rx="5"
-        fill="#0c111c"
-        stroke="#00e5ff"
-        stroke-width="1.4"
-      />
-      <!-- anten -->
-      <line x1="24" y1="8" x2="24" y2="3" stroke="#00e5ff" stroke-width="1.2" />
-      <circle cx="24" cy="2.5" r="1.6" fill="#ff2bd6" />
-
-      <!-- hốc mắt -->
-      <ellipse cx="17" cy="20" rx="5" ry="5.5" fill="#05070d" stroke="#00e5ff" stroke-width="0.8" />
-      <ellipse cx="31" cy="20" rx="5" ry="5.5" fill="#05070d" stroke="#00e5ff" stroke-width="0.8" />
-
-      <!-- mắt sáng + đồng tử (track / peek) -->
-      <g class="gaze">
-        <ellipse class="glow-l" cx="17" cy="20" rx="3.5" ry="4" fill="#00e5ff" opacity="0.9" />
-        <ellipse class="glow-r" cx="31" cy="20" rx="3.5" ry="4" fill="#00e5ff" opacity="0.9" />
-        <circle
-          class="pupil-l"
-          :cx="17 + pupil.x"
-          :cy="20 + pupil.y"
-          r="1.4"
-          fill="#05070d"
+  <span class="pet" :class="mode" aria-hidden="true">
+    <svg viewBox="0 0 64 56" width="52" height="46">
+      <g class="face" :style="faceStyle">
+        <rect
+          x="10"
+          y="12"
+          width="44"
+          height="32"
+          rx="10"
+          fill="#0c111c"
+          stroke="#00e5ff"
+          stroke-width="1.5"
         />
-        <circle
-          class="pupil-r"
-          :cx="31 + pupil.x"
-          :cy="20 + pupil.y"
-          r="1.4"
-          fill="#05070d"
+        <line x1="32" y1="12" x2="32" y2="5" stroke="#00e5ff" stroke-width="1.2" />
+        <circle cx="32" cy="4" r="2" fill="#00e5ff" opacity="0.9" />
+
+        <!-- Mắt trái / phải tách class để peek chỉ mở một bên -->
+        <g class="eye eye-l">
+          <ellipse cx="24" cy="26" rx="6" ry="6.5" fill="#05070d" />
+          <ellipse class="sclera" cx="24" cy="26" rx="4" ry="4.2" fill="#00e5ff" opacity="0.9" />
+          <circle class="pupil" cx="25" cy="27" r="1.6" fill="#05070d" />
+        </g>
+        <g class="eye eye-r">
+          <ellipse cx="40" cy="26" rx="6" ry="6.5" fill="#05070d" />
+          <ellipse class="sclera" cx="40" cy="26" rx="4" ry="4.2" fill="#00e5ff" opacity="0.9" />
+          <circle class="pupil" cx="41" cy="27" r="1.6" fill="#05070d" />
+        </g>
+
+        <path
+          d="M28 36 Q32 39 36 36"
+          fill="none"
+          stroke="#00e5ff"
+          stroke-width="1.2"
+          stroke-linecap="round"
+          opacity="0.55"
         />
       </g>
 
-      <!-- tay trái / phải (che hoặc hé) -->
       <g class="hands">
-        <!-- tay trái -->
-        <path
-          class="hand-l"
-          d="M4 28 Q8 18 14 17 Q16 19 14 22 Q10 24 6 30 Z"
+        <ellipse
+          class="hand hand-l"
+          cx="16"
+          cy="44"
+          rx="8"
+          ry="5.5"
           fill="#121826"
           stroke="#00e5ff"
           stroke-width="1"
         />
-        <!-- tay phải -->
-        <path
-          class="hand-r"
-          d="M44 28 Q40 18 34 17 Q32 19 34 22 Q38 24 42 30 Z"
+        <ellipse
+          class="hand hand-r"
+          cx="48"
+          cy="44"
+          rx="8"
+          ry="5.5"
           fill="#121826"
           stroke="#00e5ff"
           stroke-width="1"
@@ -100,66 +83,60 @@ const pupil = computed(() => {
 .pet {
   display: inline-flex;
   vertical-align: middle;
-  margin-left: 0.5rem;
-  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.45));
+  margin-left: 0.45rem;
+  line-height: 0;
 }
 
 .pet svg {
   display: block;
+  overflow: visible;
 }
 
-.hand-l,
-.hand-r,
-.glow-l,
-.glow-r,
-.pupil-l,
-.pupil-r {
-  transition:
-    transform 0.25s ease,
-    opacity 0.25s ease;
-  transform-origin: center;
-  transform-box: fill-box;
+.face {
+  transform-origin: 32px 20px;
+  transition: transform 0.22s ease-out;
 }
 
-/* Ẩn pass: 2 tay che kín mắt */
+.hand {
+  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.eye .sclera,
+.eye .pupil {
+  transition: opacity 0.25s ease;
+}
+
+/* —— COVER: hai tay lên ngang mắt, che đều —— */
 .cover .hand-l {
-  transform: translate(6px, -8px) scale(1.15);
+  transform: translate(7px, -18px) rotate(-12deg);
 }
 .cover .hand-r {
-  transform: translate(-6px, -8px) scale(1.15);
+  transform: translate(-7px, -18px) rotate(12deg);
 }
-.cover .glow-l,
-.cover .glow-r,
-.cover .pupil-l,
-.cover .pupil-r {
+.cover .eye .sclera,
+.cover .eye .pupil {
+  opacity: 0.12;
+}
+
+/* —— PEEK: tay trái hạ hẳn (mở mắt trái), tay phải vẫn che mắt phải —— */
+.peek .hand-l {
+  transform: translate(0, 0); /* về vị trí nghỉ */
+}
+.peek .hand-r {
+  transform: translate(-5px, -17px) rotate(10deg);
+}
+.peek .eye-l .sclera,
+.peek .eye-l .pupil {
+  opacity: 1;
+}
+.peek .eye-r .sclera,
+.peek .eye-r .pupil {
   opacity: 0.15;
 }
 
-/* Hiện pass: hé 1 mắt (mở trái, tay phải vẫn hơi che) */
-.peek .hand-l {
-  transform: translate(-2px, 4px);
-}
-.peek .hand-r {
-  transform: translate(-4px, -6px) scale(1.05);
-}
-.peek .glow-r,
-.peek .pupil-r {
-  opacity: 0.2;
-}
-.peek .glow-l,
-.peek .pupil-l {
-  opacity: 1;
-}
-
-/* Focus username: mắt mở, theo con trỏ */
-.track .hand-l,
-.track .hand-r {
-  transform: translate(0, 6px);
-}
-.track .glow-l,
-.track .glow-r,
-.track .pupil-l,
-.track .pupil-r {
-  opacity: 1;
+/* idle: tay thấp, mắt mở */
+.idle .hand-l,
+.idle .hand-r {
+  transform: translate(0, 0);
 }
 </style>

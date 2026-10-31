@@ -21,15 +21,15 @@ const auth = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
-const username = ref("admin");
-const password = ref("");
-const showPassword = ref(false);
-const error = ref("");
-const loading = ref(false);
-const booting = ref(!sessionStorage.getItem("admin_booted"));
-const userFocused = ref(false);
-const lookX = ref(0);
-const lookY = ref(0);
+const username = ref('admin')
+const password = ref('')
+const showPassword = ref(false)
+const error = ref('')
+const loading = ref(false)
+const booting = ref(!sessionStorage.getItem('admin_booted'))
+const passwordInput = ref<HTMLInputElement | null>(null)
+/** Field đang focus — quyết định cover/peek */
+const focusField = ref<'user' | 'pass' | null>(null)
 
 onMounted(() => {
   if (route.query.error === "forbidden") {
@@ -37,19 +37,32 @@ onMounted(() => {
   }
 });
 
-const petMode = computed(() => {
-  if (userFocused.value) return "track" as const;
-  return showPassword.value ? ("peek" as const) : ("cover" as const);
-});
+/**
+ * CodePen-style: độ dài username → nghiêng đầu (-18° … 18°).
+ * Chỉ khi đang gõ username; không theo chuột.
+ */
+const headTiltDeg = computed(() => {
+  if (focusField.value === 'pass' && showPassword.value) return -8 // nghiêng về mắt trái
+  if (focusField.value !== 'user') return 0
+  // map 0–20 ký tự → -18 … 18
+  const t = Math.min(username.value.length, 20) / 20
+  return -18 + t * 36
+})
 
-function onUserMove(e: MouseEvent) {
-  if (!userFocused.value) return;
-  const el = e.currentTarget as HTMLElement;
-  const r = el.getBoundingClientRect();
-  // Chuẩn hóa về khoảng ~-2.5 … 2.5 cho đồng tử
-  lookX.value = ((e.clientX - r.left) / r.width - 0.5) * 5;
-  lookY.value = ((e.clientY - r.top) / r.height - 0.5) * 3.5;
+function togglePassword() {
+  showPassword.value = !showPassword.value
+  // Giữ context pet = pass (cover/peek)
+  focusField.value = 'pass'
+  // Trả focus về ô mật khẩu sau khi bấm nút
+  requestAnimationFrame(() => passwordInput.value?.focus())
 }
+
+const petMode = computed(() => {
+  if (focusField.value === 'pass') {
+    return showPassword.value ? ('peek' as const) : ('cover' as const)
+  }
+  return 'idle' as const
+})
 
 function onBootDone() {
   sessionStorage.setItem("admin_booted", "1");
@@ -66,6 +79,16 @@ function onBootDone() {
       });
     }
   });
+}
+
+function onPassBlur() {
+  // Delay nhẹ: nếu focus chuyển sang nút toggle thì không về idle
+  window.setTimeout(() => {
+    const active = document.activeElement
+    if (active?.closest?.('.toggle-pass')) return
+    if (active === passwordInput.value) return
+    if (focusField.value === 'pass') focusField.value = null
+  }, 0)
 }
 
 function toggleLang() {
@@ -105,22 +128,21 @@ async function onSubmit() {
 
     <div class="login-card">
       <p class="eyebrow">{{ t("login.eyebrow") }}</p>
-      <h1>
-        {{ t("login.title") }}
-        <CyberPet :eyes-mode="petMode" :look-x="lookX" :look-y="lookY" />
+      <h1 class="title-row">
+        <span>{{ t('login.title') }}</span>
+        <CyberPet :mode="petMode" :head-tilt-deg="headTiltDeg" />
       </h1>
       <p class="lede">{{ t("login.lede") }}</p>
 
       <form @submit.prevent="onSubmit">
         <label>
-          {{ t("login.username") }}
+          {{ t('login.username') }}
           <input
             v-model="username"
             autocomplete="username"
             required
-            @focus="userFocused = true"
-            @blur="userFocused = false; lookX = 0; lookY = 0"
-            @mousemove="onUserMove"
+            @focus="focusField = 'user'"
+            @blur="focusField = null"
           />
         </label>
 
@@ -129,21 +151,23 @@ async function onSubmit() {
           <!-- pass-row: nút mắt SVG -->
           <div class="pass-row">
             <input
+              ref="passwordInput"
               v-model="password"
               :type="showPassword ? 'text' : 'password'"
               autocomplete="current-password"
               required
-              @blur="userFocused = false; lookX = 0; lookY = 0"
-              @mousemove="onUserMove"
+              @focus="focusField = 'pass'"
+              @blur="onPassBlur"
             />
             <button
               type="button"
               class="toggle-pass"
               :aria-label="showPassword ? t('login.hidePass') : t('login.showPass')"
               :aria-pressed="showPassword"
-              @click="showPassword = !showPassword"
+              @mousedown.prevent
+              @click="togglePassword"
             >
-              <!-- mắt đơn giản -->
+              <!-- Đang ẩn pass → icon mắt mở (bấm để hiện) -->
               <svg
                 v-if="!showPassword"
                 viewBox="0 0 24 24"
@@ -153,13 +177,20 @@ async function onSubmit() {
               >
                 <path
                   fill="currentColor"
-                  d="M12 5c-5 0-9.3 3-11 7 1.7 4 6 7 11 7s9.3-3 11-7c-1.7-4-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"
+                  d="M12 5c-5.5 0-9.9 3.4-11.5 7 1.6 3.6 6 7 11.5 7s9.9-3.4 11.5-7C21.9 8.4 17.5 5 12 5zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
                 />
               </svg>
-              <svg v-else viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <!-- Đang hiện pass → icon mắt gạch (bấm để ẩn) -->
+              <svg
+                v-else
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                aria-hidden="true"
+              >
                 <path
                   fill="currentColor"
-                  d="M2 4.3 3.3 3l18 18-1.3 1.3-3.1-3.1A12 12 0 0 1 12 19c-5 0-9.3-3-11-7a13 13 0 0 1 4.2-5.2L2 4.3zM12 7a5 5 0 0 1 5 5c0 .7-.1 1.3-.4 1.9l-6.5-6.5c.6-.3 1.2-.4 1.9-.4zm-5 5c0-.7.1-1.3.4-1.9l6.5 6.5c-.6.3-1.2.4-1.9.4a5 5 0 0 1-5-5z"
+                  d="M3.3 2 2 3.3l3.1 3.1C3.2 8 1.8 9.8 1 12c1.6 3.6 6 7 11 7 1.9 0 3.7-.4 5.3-1.1L19.7 21 21 19.7 3.3 2zM12 17c-3.9 0-7.2-2.3-8.8-5 .7-1.5 1.9-2.9 3.4-3.9l1.6 1.6A5 5 0 0 0 12 17zm0-10c3.9 0 7.2 2.3 8.8 5-.5 1.1-1.2 2.1-2.1 3l1.5 1.5c1.2-1.2 2.1-2.7 2.6-4.5-1.6-3.6-6-7-10.8-7-1.1 0-2.2.2-3.2.5L9.6 7.2C10.3 7.1 11.1 7 12 7zm-1.1 3.3 2.9 2.9c.1-.2.2-.5.2-.8a3 3 0 0 0-3-3c-.3 0-.6.1-.8.2z"
                 />
               </svg>
             </button>
