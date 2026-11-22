@@ -29,6 +29,7 @@ using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 
 namespace Platform.Identity;
 
@@ -70,8 +71,20 @@ public class IdentityHttpApiHostModule : AbpModule
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+        ConfigureAntiForgery();
     }
 
+    /// <summary>
+    /// SPA Admin gọi API bằng Bearer JWT, không gửi cookie antiforgery.
+    /// Tắt auto-validate để PUT/POST (khóa user, đổi role…) không bị 400.
+    /// </summary>
+    private void ConfigureAntiForgery()
+    {
+        Configure<AbpAntiForgeryOptions>(options =>
+        {
+            options.AutoValidate = false;
+        });
+    }
     private void ConfigureAuthentication(ServiceConfigurationContext context)
     {
         context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
